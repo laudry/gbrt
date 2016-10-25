@@ -1,0 +1,29 @@
+# .gitattributes for vs2015 C++
+
+# text files
+*.sln		text eol=crlf
+*.vcxproj	text eol=crlf
+*.filters	text eol=crlf
+*.h			text eol=crlf diff=cpp
+*.hpp		text eol=crlf diff=cpp
+*.c			text eol=crlf diff=cpp
+*.cpp		text eol=crlf diff=cpp
+*.inl		text eol=crlf diff=cpp
+*.tlh		text eol=crlf diff=cpp
+*.tli		text eol=crlf diff=cpp
+*.rc		text eol=crlf
+*.rc2		text eol=crlf
+
+# binary files
+*.exe		binary
+*.lib		binary
+*.dll		binary
+*.pdb		binary
+*.ico		binary
+*.bmp		binary
+*.jpg		binary
+*.jpeg		binary
+*.png		binary
+*.gif		binary
+*.tif		binary
+*.tiff		binary

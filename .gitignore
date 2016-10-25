@@ -1,29 +1,12 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# .gitignore for vs2015 C++
 
-# Precompiled Headers
-*.gch
-*.pch
+# ignore dir
+.vs/
+bin/
+ipch/
+gbrt/Win32/
+gbrt/x64/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# ignore ext
+*.opendb
+*.db
