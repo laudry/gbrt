@@ -45,6 +45,15 @@
     <ClInclude Include="gbmoduledata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gberror.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gbfsminner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gbfsm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -63,6 +72,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gbmoduledata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gberror.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gbfsminner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gbfsm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

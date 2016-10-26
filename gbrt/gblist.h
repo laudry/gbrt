@@ -53,7 +53,7 @@ GBEXTERN_C GBINLINE void GBSTDCALL GBDelListItem(
 }
 
 // 判断是否空链表。
-#define GBIsEmptyList(lpList) ((lpList)->lpNext == (lpList))
+#define GBIsListEmpty(lpList) ((lpList)->lpNext == (lpList))
 
 // 初始化链表。
 GBEXTERN_C GBINLINE void GBSTDCALL GBInitList(

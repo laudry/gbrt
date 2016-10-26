@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gbrt", "gbrt\gbrt.vcxproj", "{3650323E-BE48-4B83-A81A-0ECEED97184A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gbrttest", "gbrttest\gbrttest.vcxproj", "{D8A16A27-8400-4595-95AA-1B7A6F97575A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{3650323E-BE48-4B83-A81A-0ECEED97184A}.Release|x64.Build.0 = Release|x64
 		{3650323E-BE48-4B83-A81A-0ECEED97184A}.Release|x86.ActiveCfg = Release|Win32
 		{3650323E-BE48-4B83-A81A-0ECEED97184A}.Release|x86.Build.0 = Release|Win32
+		{D8A16A27-8400-4595-95AA-1B7A6F97575A}.Debug|x64.ActiveCfg = Debug|x64
+		{D8A16A27-8400-4595-95AA-1B7A6F97575A}.Debug|x64.Build.0 = Debug|x64
+		{D8A16A27-8400-4595-95AA-1B7A6F97575A}.Debug|x86.ActiveCfg = Debug|Win32
+		{D8A16A27-8400-4595-95AA-1B7A6F97575A}.Debug|x86.Build.0 = Debug|Win32
+		{D8A16A27-8400-4595-95AA-1B7A6F97575A}.Release|x64.ActiveCfg = Release|x64
+		{D8A16A27-8400-4595-95AA-1B7A6F97575A}.Release|x64.Build.0 = Release|x64
+		{D8A16A27-8400-4595-95AA-1B7A6F97575A}.Release|x86.ActiveCfg = Release|Win32
+		{D8A16A27-8400-4595-95AA-1B7A6F97575A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

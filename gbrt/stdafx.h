@@ -23,6 +23,9 @@
 #include <tchar.h>
 
 #include "gbcommon.h"
-#include "gbassert.h"
+#include "gbfsminner.h"
+#include "gbfsm.h"
 #include "gbmoduledata.h"
+#include "gbassert.h"
 #include "gbthreaddata.h"
+#include "gberror.h"

@@ -27,7 +27,7 @@
 #define GBPTR2PTR(_PtrType, _Ptr) ((_PtrType)(LPVOID)(_Ptr))
 #define GBINT2PTR(_PtrType, _Int) ((_PtrType)(LPVOID)(_Int))
 #define GBPTR2INT(_IntType, _Ptr) ((_IntType)(LPVOID)(_Ptr))
-#define GBINT2INT(_IntType, _Int) ((_IntType)(LPVOID)(_Int))
+#define GBINT2INT(_IntType, _Int) ((_IntType)(int)(_Int))
 
 #define GBALIGNSIZE1(dwSize, dwAlign) ((((dwSize)-1)/(dwAlign)+1)*(dwAlign))
 #define GBALIGNSIZE2(dwSize, dwShift) (((((dwSize)-1)>>(dwShift))+1)<<(dwShift))

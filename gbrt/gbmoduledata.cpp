@@ -1,7 +1,6 @@
 // Copyright (c) 2016 甘波。All rights reserved。
 
 #include "stdafx.h"
-#include "gbmoduledata.h"
 
 #pragma region "模块数据。"
 
@@ -38,6 +37,11 @@ BOOL CGBModuleData::Init(
 	}
 	++m_dwInitMark;
 
+	// 初始化 FSM 分配器管理器。
+	if (!GBInitFSMAllocMgr(&m_FSMAllocMgr))
+		return FALSE;
+	++m_dwInitMark;
+
 	return TRUE;
 }
 
@@ -48,6 +52,11 @@ void CGBModuleData::Release(void)
 	// 注：按初始化记号逐步释放成员变量，这时不需要 break。
 	switch (m_dwInitMark)
 	{
+	case GB_IM_FSM_ALLOC_MGR_INITIALIZED:		// FSM 分配器管理器初始化完毕。
+	{
+		// 释放 FSM 分配器管理器。
+		GBReleaseFSMAllocMgr(&m_FSMAllocMgr);
+	}
 	case GB_IM_CSP_INITIALIZED:					// CSP 句柄初始化完毕。
 	{
 		// 释放 CSP 句柄。

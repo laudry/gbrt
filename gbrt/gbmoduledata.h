@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "gbfsminner.h"
+
 #pragma pack(push, GBPACK)
 
 // 初始化记号。
@@ -13,6 +15,7 @@ typedef enum _GBINITMARK
 	GB_IM_NOT_INITIALIZED = 0,					// 未初始化。
 	GB_IM_TLS_INDEX_INITIALIZED,				// TLS 索引初始化完毕。
 	GB_IM_CSP_INITIALIZED,						// CSP 句柄初始化完毕。
+	GB_IM_FSM_ALLOC_MGR_INITIALIZED,			// FSM 分配器管理器初始化完毕。
 } GBINITMARK;
 
 // 模块数据。
@@ -36,6 +39,7 @@ public:
 	DWORD m_dwInitMark;							// 初始化记号。
 	DWORD m_dwTlsIndex;							// TLS 索引。
 	HCRYPTPROV m_hCSP;							// CSP 句柄。
+	GBFSMALLOCMGR m_FSMAllocMgr;				// FSM 分配器管理器。
 };
 
 #pragma pack(pop)

@@ -1,7 +1,6 @@
 // Copyright (c) 2016 ¸Ê²¨¡£All rights reserved¡£
 
 #include "stdafx.h"
-#include "gbthreaddata.h"
 
 #pragma region "¾²Ì¬º¯Êý¡£"
 
