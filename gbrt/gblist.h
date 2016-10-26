@@ -23,7 +23,7 @@ typedef struct _GBLIST const *LPCGBLIST;
 GBEXTERN_C GBINLINE void GBSTDCALL GBInsertAfterListItem(
 	LPGBLIST lpDesListItem,						// INOUT：目的链表项。
 	LPGBLIST lpListItem							// INOUT：链表项。
-	)
+)
 {
 	lpListItem->lpNext = lpDesListItem->lpNext;
 	lpListItem->lpPrev = lpDesListItem;
@@ -35,7 +35,7 @@ GBEXTERN_C GBINLINE void GBSTDCALL GBInsertAfterListItem(
 GBEXTERN_C GBINLINE void GBSTDCALL GBInsertBeforeListItem(
 	LPGBLIST lpDesListItem,						// INOUT：目的链表项。
 	LPGBLIST lpListItem							// INOUT：链表项。
-	)
+)
 {
 	lpListItem->lpPrev = lpDesListItem->lpPrev;
 	lpListItem->lpNext = lpDesListItem;
@@ -46,7 +46,7 @@ GBEXTERN_C GBINLINE void GBSTDCALL GBInsertBeforeListItem(
 // 删除链表项。
 GBEXTERN_C GBINLINE void GBSTDCALL GBDelListItem(
 	LPGBLIST lpListItem							// INOUT：链表项。
-	)
+)
 {
 	lpListItem->lpNext->lpPrev = lpListItem->lpPrev;
 	lpListItem->lpPrev->lpNext = lpListItem->lpNext;
@@ -58,7 +58,7 @@ GBEXTERN_C GBINLINE void GBSTDCALL GBDelListItem(
 // 初始化链表。
 GBEXTERN_C GBINLINE void GBSTDCALL GBInitList(
 	LPGBLIST lpList								// INOUT：链表。
-	)
+)
 {
 	lpList->lpNext = lpList->lpPrev = lpList;
 }
@@ -67,7 +67,7 @@ GBEXTERN_C GBINLINE void GBSTDCALL GBInitList(
 GBEXTERN_C GBINLINE void GBSTDCALL GBInsertAfterList(
 	LPGBLIST lpDesListItem,						// INOUT：目的链表项。
 	LPGBLIST lpList								// INOUT：链表。
-	)
+)
 {
 	lpList->lpPrev->lpNext = lpDesListItem->lpNext;
 	lpList->lpNext->lpPrev = lpDesListItem;
@@ -80,7 +80,7 @@ GBEXTERN_C GBINLINE void GBSTDCALL GBInsertAfterList(
 GBEXTERN_C GBINLINE void GBSTDCALL GBInsertBeforeList(
 	LPGBLIST lpDesListItem,						// INOUT：目的链表项。
 	LPGBLIST lpList								// INOUT：链表。
-	)
+)
 {
 	lpList->lpNext->lpPrev = lpDesListItem->lpPrev;
 	lpList->lpPrev->lpNext = lpDesListItem;

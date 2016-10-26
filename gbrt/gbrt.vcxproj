@@ -163,7 +163,9 @@
     <ClInclude Include="gbcommon.h" />
     <ClInclude Include="gbdef.h" />
     <ClInclude Include="gblist.h" />
+    <ClInclude Include="gbmoduledata.h" />
     <ClInclude Include="gbrt.h" />
+    <ClInclude Include="gbthreaddata.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -183,7 +185,9 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="gbassert.cpp" />
+    <ClCompile Include="gbmoduledata.cpp" />
     <ClCompile Include="gbrt.cpp" />
+    <ClCompile Include="gbthreaddata.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -3,6 +3,11 @@
 #include "stdafx.h"
 #include <assert.h>
 
+#pragma region "导出函数。"
+
+//////////////////////////////////////////////////////////////////////////
+// 导出函数。
+
 #if defined (_DEBUG)
 
 // 断言。由于 C 标准库的断言函数在多线程环境下有时会出错，固添加此函数。
@@ -21,3 +26,5 @@ GBEXTERN_C GBAPI void GBSTDCALL GBAssert(
 }
 
 #endif
+
+#pragma endregion

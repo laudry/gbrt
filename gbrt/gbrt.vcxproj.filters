@@ -39,6 +39,12 @@
     <ClInclude Include="gbrt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gbthreaddata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gbmoduledata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -51,6 +57,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gbassert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gbthreaddata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gbmoduledata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

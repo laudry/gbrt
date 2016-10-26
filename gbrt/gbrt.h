@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "gbdef.h"
+#include "gbcommon.h"
 
 #if !defined (GBAPI)
 	#define GBAPI __declspec(dllexport)

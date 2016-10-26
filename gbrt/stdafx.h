@@ -22,4 +22,7 @@
 #endif											// _DEBUG
 #include <tchar.h>
 
+#include "gbcommon.h"
 #include "gbassert.h"
+#include "gbmoduledata.h"
+#include "gbthreaddata.h"

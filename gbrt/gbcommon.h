@@ -11,13 +11,32 @@
 
 // 通知函数。
 typedef int (GBSTDCALL *GBNOTIFYPROC)(
-	UINT uMsg,									// IN：消息。
-	UINT_PTR uParam1,							// IN：参数一。
-	UINT_PTR uParam2,							// IN：参数二。
-	UINT_PTR lpUserData							// IN：用户数据。
+	int nMsg,									// IN：消息。
+	INT_PTR nParam1,							// IN：参数一。
+	INT_PTR nParam2,							// IN：参数二。
+	INT_PTR lpUserData							// IN：用户数据。
 	);
 
 #pragma pack(pop)
+
+// 构造对象。
+template<class _Type>
+GBINLINE void GBSTDCALL GBConstruct(_Type *lpObj)
+{
+	::new (lpObj) _Type();
+}
+template<class _Type, class _OtherType>
+GBINLINE void GBSTDCALL GBConstruct(_Type *lpObj, const _OtherType & Value)
+{
+	::new (lpObj) _Type(Value);
+}
+
+// 析构对象。
+template<class _Type>
+GBINLINE void GBSTDCALL GBDestruct(_Type *lpObj)
+{
+	lpObj->~_Type();
+}
 
 // 初始化临界区。
 GBEXTERN_C GBINLINE BOOL GBSTDCALL GBInitializeCriticalSection(
