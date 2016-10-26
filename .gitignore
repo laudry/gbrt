@@ -6,7 +6,10 @@ bin/
 ipch/
 gbrt/Win32/
 gbrt/x64/
+gbrttest/Win32/
+gbrttest/x64/
 
 # ignore ext
 *.opendb
 *.db
+*.aps
