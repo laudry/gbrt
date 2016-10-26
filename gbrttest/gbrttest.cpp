@@ -17,6 +17,7 @@ BEGIN_MESSAGE_MAP(CgbrttestApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
+GB_DECL_MAP(Int, int, int, 1024);
 
 // CgbrttestApp 构造
 
@@ -69,6 +70,33 @@ BOOL CgbrttestApp::InitInstance()
 	// TODO: 应适当修改该字符串，
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
+
+	LARGE_INTEGER LI, LI1, LI2;
+	::QueryPerformanceFrequency(&LI);
+
+	{
+		::QueryPerformanceCounter(&LI1);
+		CGBIntMap IntMap;
+		for (int i = 0; i != 1024 *1024; ++i)
+			IntMap[i] = i;
+		::QueryPerformanceCounter(&LI2);
+	}
+
+	LONGLONG llTime1 = LI2.QuadPart - LI1.QuadPart;
+
+	{
+		::QueryPerformanceCounter(&LI1);
+		std::map<int, int> IntMap;
+		for (int i = 0; i != 1024 * 1024; ++i)
+			IntMap[i] = i;
+		::QueryPerformanceCounter(&LI2);
+	}
+
+	LONGLONG llTime2 = LI2.QuadPart - LI1.QuadPart;
+
+	CString str;
+	str.Format(_T("%I64d, %I64d"), llTime1, llTime2);
+	AfxMessageBox(str);
 
 	CgbrttestDlg dlg;
 	m_pMainWnd = &dlg;

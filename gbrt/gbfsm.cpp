@@ -136,35 +136,38 @@ GBEXTERN_C GBAPI LPVOID GBSTDCALL GBAllocFSM(
 	// 获取 FSM 分配器。
 	LPGBFSMALLOC lpFSMAlloc = GBPTR2PTR(LPGBFSMALLOC, hFSMAlloc);
 
-	// 遍历已有 FSM 页。
-	LPGBLIST lpListItem = lpFSMAlloc->FSMPageList.lpNext;
-	while (lpListItem != &lpFSMAlloc->FSMPageList)
+	// 判断 FSM 页链表是否空链表。
+	if (!GBIsListEmpty(&lpFSMAlloc->FSMPageList))
 	{
-		// 获取当前 FSM 页。
-		LPGBFSMPAGE lpFSMPage = GBPTR2PTR(LPGBFSMPAGE, lpListItem);
-		lpListItem = lpListItem->lpNext;
+		// 获取第一个 FSM 页。
+		LPGBFSMPAGE lpFSMPage = GBPTR2PTR(LPGBFSMPAGE, lpFSMAlloc->FSMPageList.lpNext);
 
-		// 判断当前 FSM 页是否能分配 FSM 块。
+		// 判断第一个 FSM 页能否分配 FSM 块。
+		// 注：如果此页不能分配 FSM 块的话，则已有 FSM 页都不能分配 FSM 块。
 		if (lpFSMPage->dwAllocedCount != lpFSMAlloc->dwAllocCountOnce)
 		{
 			// 从当前 FSM 页中分配 FSM 块。
 			LPGBFSMBLOCK lpFSMBlock;
-			if (0 != lpFSMPage->dwFreeFSMBlockCount)
+			if (0 == lpFSMPage->dwFreeFSMBlockCount)
+			{
+				lpFSMBlock = GBPTR2PTR(LPGBFSMBLOCK, GBPTR2PTR(LPBYTE, lpFSMPage) + sizeof(GBFSMPAGE) + lpFSMPage->dwAllocedCount*lpFSMAlloc->dwFSMBlockSize);
+			}
+			else
 			{
 				lpFSMBlock = GBPTR2PTR(LPGBFSMBLOCK, lpFSMPage->FreeFSMBlockList.lpNext);
 				GBDelListItem(&lpFSMBlock->FreeFSMBlockListItem);
 				--lpFSMPage->dwFreeFSMBlockCount;
-			}
-			else
-			{
-				lpFSMBlock = GBPTR2PTR(LPGBFSMBLOCK, GBPTR2PTR(LPBYTE, lpFSMPage) + sizeof(GBFSMPAGE) + lpFSMPage->dwAllocedCount*lpFSMAlloc->dwFSMBlockSize);
 			}
 			lpFSMBlock->lpFSMAlloc = lpFSMAlloc;
 			lpFSMBlock->lpFSMPage = lpFSMPage;
 
 			// 增加已分配数。
 			++lpFSMAlloc->dwAllocedCount;
-			++lpFSMPage->dwAllocedCount;
+			if (++lpFSMPage->dwAllocedCount == lpFSMAlloc->dwAllocCountOnce)
+			{
+				GBDelListItem(&lpFSMPage->FSMPageListItem);
+				GBInsertBeforeListItem(&lpFSMAlloc->FSMPageList, &lpFSMPage->FSMPageListItem);
+			}
 
 			// 根据 FSM 块获取 FSM。
 			return GBGetFSMFromFSMBlock(lpFSMBlock);
@@ -193,7 +196,11 @@ GBEXTERN_C GBAPI LPVOID GBSTDCALL GBAllocFSM(
 
 	// 增加已分配数。
 	++lpFSMAlloc->dwAllocedCount;
-	++lpFSMPage->dwAllocedCount;
+	if (++lpFSMPage->dwAllocedCount == lpFSMAlloc->dwAllocCountOnce)
+	{
+		GBDelListItem(&lpFSMPage->FSMPageListItem);
+		GBInsertBeforeListItem(&lpFSMAlloc->FSMPageList, &lpFSMPage->FSMPageListItem);
+	}
 
 	// 根据 FSM 块获取 FSM。
 	return GBGetFSMFromFSMBlock(lpFSMBlock);
@@ -214,6 +221,8 @@ GBEXTERN_C GBAPI void GBSTDCALL GBFreeFSM(
 	// 减少已分配数。
 	--lpFSMAlloc->dwAllocedCount;
 	--lpFSMPage->dwAllocedCount;
+	GBDelListItem(&lpFSMPage->FSMPageListItem);
+	GBInsertAfterListItem(&lpFSMAlloc->FSMPageList, &lpFSMPage->FSMPageListItem);
 
 	// 加入 FSM 页的空闲 FSM 块链表。
 	GBInsertAfterListItem(&lpFSMPage->FreeFSMBlockList, &lpFSMBlock->FreeFSMBlockListItem);
@@ -254,7 +263,7 @@ GBEXTERN_C GBAPI BOOL GBSTDCALL GBIsFSM(
 		LPGBLIST lpListItem = lpFSMAlloc->FSMPageList.lpNext;
 		while (lpListItem != &lpFSMAlloc->FSMPageList)
 		{
-			if (GBPTR2PTR(LPGBFSMBLOCK, lpListItem) == lpFSMBlock)
+			if (GBPTR2PTR(LPGBFSMPAGE, lpListItem) == lpFSMPage)
 			{
 				// 存在时判断 FSM 块在 FSM 页中是否存在。
 				// 注：这时无需判断 FSM 块是否在 FSM 页的空闲 FSM 块链表中，因为空闲 FSM 块的指针为空闲 FSM 块链表项指针。

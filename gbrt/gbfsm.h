@@ -75,4 +75,165 @@ GBEXTERN_C GBAPI BOOL GBSTDCALL GBLockedIsFSM(
 	LPVOID lpFSM								// IN：FSM。
 );
 
+#pragma pack(push, GBPACK)
+
+// std::set、std::map 用分配器。
+template<class _Type, DWORD _dwAllocCountOnce, DWORD _dwAppointedIndex=0>
+class CGBAlloc
+{
+public:
+	typedef typename _Type value_type;
+
+	typedef value_type *pointer;
+	typedef value_type & reference;
+	typedef const value_type *const_pointer;
+	typedef const value_type & const_reference;
+
+	typedef size_t size_type;
+	typedef ptrdiff_t difference_type;
+
+	template<class _OtherType>
+	struct rebind
+	{
+		typedef CGBAlloc<_OtherType, _dwAllocCountOnce, _dwAppointedIndex> other;
+	};
+
+public:
+	// 构造及析构函数。
+	CGBAlloc(void) : m_hFSMAlloc(NULL), m_lpFirstAllocPtr(NULL), m_dwMaxAllocCount(GBCalcMaxAllocCountOfFSMAlloc(sizeof(_Type), _dwAllocCountOnce)), m_dwIndex(0)
+	{
+	}
+	CGBAlloc(const CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & OtherAlloc) : m_hFSMAlloc(NULL), m_lpFirstAllocPtr(NULL), m_dwMaxAllocCount(GBCalcMaxAllocCountOfFSMAlloc(sizeof(_Type), _dwAllocCountOnce)), m_dwIndex(OtherAlloc.m_dwIndex + 1)
+	{
+	}
+	template<class _OtherType, DWORD _dwOtherAllocCountOnce, DWORD _dwOtherAppointedIndex>
+	CGBAlloc(const CGBAlloc<_OtherType, _dwOtherAllocCountOnce, _dwOtherAppointedIndex> & OtherAlloc) : m_hFSMAlloc(NULL), m_lpFirstAllocPtr(NULL), m_dwMaxAllocCount(GBCalcMaxAllocCountOfFSMAlloc(sizeof(_Type), _dwAllocCountOnce)), m_dwIndex(OtherAlloc.m_dwIndex + 1)
+	{
+	}
+	~CGBAlloc(void)
+	{
+		if (NULL != m_hFSMAlloc)
+			GBDestroyFSMAlloc(m_hFSMAlloc);
+	}
+
+	// 赋值函数。
+	CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & operator = (const CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & OtherAlloc)
+	{
+		return (*this);
+	}
+	template<class _OtherType, DWORD _dwOtherAllocCountOnce, DWORD _dwOtherAppointedIndex>
+	CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & operator = (const CGBAlloc<_OtherType, _dwOtherAllocCountOnce, _dwOtherAppointedIndex> & OtherAlloc)
+	{
+		return (*this);
+	}
+
+	// 分配及释放函数。
+	pointer allocate(size_type uCount)
+	{
+		GBASSERT(1 == uCount);
+		if (m_dwIndex != _dwAppointedIndex)
+		{
+			return GBPTR2PTR(pointer, malloc(sizeof(_Type)));
+		}
+		else
+		{
+			if (NULL == m_lpFirstAllocPtr)
+			{
+				m_lpFirstAllocPtr = GBPTR2PTR(pointer, malloc(sizeof(_Type)));
+				return m_lpFirstAllocPtr;
+			}
+			if (NULL == m_hFSMAlloc)
+			{
+				m_hFSMAlloc = GBCreateFSMAlloc(sizeof(_Type), _dwAllocCountOnce);
+				if (NULL == m_hFSMAlloc)
+					return NULL;
+			}
+			return GBPTR2PTR(pointer, GBAllocFSM(m_hFSMAlloc));
+		}
+	}
+	pointer allocate(size_type uCount, const void *)
+	{
+		return allocate(uCount);
+	}
+	void deallocate(pointer lpPtr, size_type uCount)
+	{
+		GBASSERT(1 == uCount);
+		if (m_dwIndex != _dwAppointedIndex)
+			free(lpPtr);
+		else if (lpPtr == m_lpFirstAllocPtr)
+		{
+			free(lpPtr);
+			m_lpFirstAllocPtr = NULL;
+		}
+		else
+			GBFreeFSM(lpPtr);
+	}
+
+	// 构建及销毁函数。
+	void construct(pointer lpPtr, const _Type & Value)
+	{
+		_Construct(lpPtr, Value);
+	}
+	void destroy(pointer lpPtr)
+	{
+		_Destroy(lpPtr);
+	}
+
+	// 最大分配数函数。
+	size_type max_size() const
+	{
+		return m_dwMaxAllocCount;
+	}
+
+public:
+	// 成员变量。
+	HANDLE m_hFSMAlloc;							// FSM 分配器。
+	pointer m_lpFirstAllocPtr;					// 第一次分配指针。
+	const DWORD m_dwMaxAllocCount;				// 最大分配数。
+	const DWORD m_dwIndex;						// 索引。
+};
+
+#pragma pack(pop)
+
+// 比较函数。
+template<class _Type1, DWORD _dwAllocCountOnce1, class _Type2, DWORD _dwAllocCountOnce2>
+GBINLINE bool GBSTDCALL operator == (const CGBAlloc<_Type1, _dwAllocCountOnce1> & Alloc1, const CGBAlloc<_Type2, _dwAllocCountOnce2> & Alloc2)
+{
+	return false;
+}
+template<class _Type1, DWORD _dwAllocCountOnce1, class _Type2, DWORD _dwAllocCountOnce2>
+GBINLINE bool GBSTDCALL operator != (const CGBAlloc<_Type1, _dwAllocCountOnce1> & Alloc1, const CGBAlloc<_Type2, _dwAllocCountOnce2> & Alloc2)
+{
+	return true;
+}
+
+// 生成名称。
+#define GB_GEN_COMP_NAME(_CompName) CGB##_CompName##Comp
+#define GB_GEN_SET_ALLOC_NAME(_Name) CGB##_Name##SetAlloc
+#define GB_GEN_SET_NAME(_Name) CGB##_Name##Set
+#define GB_GEN_MAP_ALLOC_NAME(_Name) CGB##_Name##MapAlloc
+#define GB_GEN_MAP_NAME(_Name) CGB##_Name##Map
+
+// 声明分配器。
+#define GB_DECL_SET_ALLOC(_Name, _Type, _dwAllocCountOnce) \
+	typedef CGBAlloc<_Type, _dwAllocCountOnce> GB_GEN_SET_ALLOC_NAME(_Name)
+#define GB_DECL_MAP_ALLOC(_Name, _Key, _Value, _dwAllocCountOnce) \
+	typedef CGBAlloc<std::pair<const _Key, _Value>, _dwAllocCountOnce> GB_GEN_MAP_ALLOC_NAME(_Name)
+
+// 声明 std::set。
+#define GB_DECL_SET(_Name, _Type, _dwAllocCountOnce) \
+	GB_DECL_SET_ALLOC(_Name, _Type, _dwAllocCountOnce);\
+	typedef std::set<_Type, std::less<_Type>, GB_GEN_SET_ALLOC_NAME(_Name)> GB_GEN_SET_NAME(_Name)
+#define GB_DECL_SET_EX(_Name, _CompName, _Type, _dwAllocCountOnce) \
+	GB_DECL_SET_ALLOC(_Name, _Type, _dwAllocCountOnce);\
+	typedef std::set<_Type, GB_GEN_COMP_NAME(_CompName), GB_GEN_SET_ALLOC_NAME(_Name)> GB_GEN_SET_NAME(_Name)
+
+// 声明 std::map。
+#define GB_DECL_MAP(_Name, _Key, _Value, _dwAllocCountOnce) \
+	GB_DECL_MAP_ALLOC(_Name, _Key, _Value, _dwAllocCountOnce);\
+	typedef std::map<_Key, _Value, std::less<_Key>, GB_GEN_MAP_ALLOC_NAME(_Name)> GB_GEN_MAP_NAME(_Name)
+#define GB_DECL_MAP_EX(_Name, _CompName, _Key, _Value, _dwAllocCountOnce) \
+	GB_DECL_MAP_ALLOC(_Name, _Key, _Value, _dwAllocCountOnce);\
+	typedef std::map<_Key, _Value, GB_GEN_COMP_NAME(_CompName), GB_GEN_MAP_ALLOC_NAME(_Name)> GB_GEN_MAP_NAME(_Name)
+
 #endif
