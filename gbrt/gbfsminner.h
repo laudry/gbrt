@@ -78,7 +78,7 @@ GBEXTERN_C void GBSTDCALL GBFreeFSMAlloc(
 
 // 初始化 FSM 分配器管理器。
 GBEXTERN_C BOOL GBSTDCALL GBInitFSMAllocMgr(
-	LPGBFSMALLOCMGR lpFSMAllocMgr				// IN：FSM 分配器管理器。
+	LPGBFSMALLOCMGR lpFSMAllocMgr				// INOUT：FSM 分配器管理器。
 );
 
 // 释放 FSM 分配器管理器。

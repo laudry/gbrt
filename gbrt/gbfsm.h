@@ -100,29 +100,37 @@ public:
 
 public:
 	// 构造及析构函数。
-	CGBAlloc(void) : m_hFSMAlloc(NULL), m_lpFirstAllocPtr(NULL), m_dwMaxAllocCount(GBCalcMaxAllocCountOfFSMAlloc(sizeof(_Type), _dwAllocCountOnce)), m_dwIndex(0)
+	CGBAlloc(void)
+		: m_dwMaxAllocCount(GBCalcMaxAllocCountOfFSMAlloc(sizeof(_Type), _dwAllocCountOnce)), m_dwIndex(0), m_hFSMAlloc(NULL), m_lpFirstAllocPtr(NULL)
 	{
 	}
-	CGBAlloc(const CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & OtherAlloc) : m_hFSMAlloc(NULL), m_lpFirstAllocPtr(NULL), m_dwMaxAllocCount(GBCalcMaxAllocCountOfFSMAlloc(sizeof(_Type), _dwAllocCountOnce)), m_dwIndex(OtherAlloc.m_dwIndex + 1)
+	CGBAlloc(const CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & OtherAlloc)
+		: m_dwMaxAllocCount(GBCalcMaxAllocCountOfFSMAlloc(sizeof(_Type), _dwAllocCountOnce)), m_dwIndex(OtherAlloc.m_dwIndex + 1), m_hFSMAlloc(NULL), m_lpFirstAllocPtr(NULL)
 	{
 	}
 	template<class _OtherType, DWORD _dwOtherAllocCountOnce, DWORD _dwOtherAppointedIndex>
-	CGBAlloc(const CGBAlloc<_OtherType, _dwOtherAllocCountOnce, _dwOtherAppointedIndex> & OtherAlloc) : m_hFSMAlloc(NULL), m_lpFirstAllocPtr(NULL), m_dwMaxAllocCount(GBCalcMaxAllocCountOfFSMAlloc(sizeof(_Type), _dwAllocCountOnce)), m_dwIndex(OtherAlloc.m_dwIndex + 1)
+	CGBAlloc(const CGBAlloc<_OtherType, _dwOtherAllocCountOnce, _dwOtherAppointedIndex> & OtherAlloc)
+		: m_dwMaxAllocCount(GBCalcMaxAllocCountOfFSMAlloc(sizeof(_Type), _dwAllocCountOnce)), m_dwIndex(OtherAlloc.m_dwIndex + 1), m_hFSMAlloc(NULL), m_lpFirstAllocPtr(NULL)
 	{
 	}
 	~CGBAlloc(void)
 	{
 		if (NULL != m_hFSMAlloc)
 			GBDestroyFSMAlloc(m_hFSMAlloc);
+		GBASSERT(NULL == m_lpFirstAllocPtr);
 	}
 
 	// 赋值函数。
-	CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & operator = (const CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & OtherAlloc)
+	CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & operator = (
+		const CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & OtherAlloc
+		)
 	{
 		return (*this);
 	}
 	template<class _OtherType, DWORD _dwOtherAllocCountOnce, DWORD _dwOtherAppointedIndex>
-	CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & operator = (const CGBAlloc<_OtherType, _dwOtherAllocCountOnce, _dwOtherAppointedIndex> & OtherAlloc)
+	CGBAlloc<_Type, _dwAllocCountOnce, _dwAppointedIndex> & operator = (
+		const CGBAlloc<_OtherType, _dwOtherAllocCountOnce, _dwOtherAppointedIndex> & OtherAlloc
+		)
 	{
 		return (*this);
 	}
@@ -142,7 +150,7 @@ public:
 				m_lpFirstAllocPtr = GBPTR2PTR(pointer, malloc(sizeof(_Type)));
 				return m_lpFirstAllocPtr;
 			}
-			if (NULL == m_hFSMAlloc)
+			else if (NULL == m_hFSMAlloc)
 			{
 				m_hFSMAlloc = GBCreateFSMAlloc(sizeof(_Type), _dwAllocCountOnce);
 				if (NULL == m_hFSMAlloc)
@@ -160,13 +168,13 @@ public:
 		GBASSERT(1 == uCount);
 		if (m_dwIndex != _dwAppointedIndex)
 			free(lpPtr);
-		else if (lpPtr == m_lpFirstAllocPtr)
+		else if (lpPtr != m_lpFirstAllocPtr)
+			GBFreeFSM(lpPtr);
+		else
 		{
 			free(lpPtr);
 			m_lpFirstAllocPtr = NULL;
 		}
-		else
-			GBFreeFSM(lpPtr);
 	}
 
 	// 构建及销毁函数。
@@ -187,10 +195,10 @@ public:
 
 public:
 	// 成员变量。
-	HANDLE m_hFSMAlloc;							// FSM 分配器。
-	pointer m_lpFirstAllocPtr;					// 第一次分配指针。
 	const DWORD m_dwMaxAllocCount;				// 最大分配数。
 	const DWORD m_dwIndex;						// 索引。
+	HANDLE m_hFSMAlloc;							// FSM 分配器。
+	pointer m_lpFirstAllocPtr;					// 第一次分配指针。
 };
 
 #pragma pack(pop)

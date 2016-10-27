@@ -21,6 +21,7 @@ BOOL CGBModuleData::Init(
 	HMODULE hModule								// IN：模块句柄。
 )
 {
+	// 获取模块句柄。
 	m_hModule = hModule;
 
 	// 初始化 TLS 索引。
@@ -42,6 +43,11 @@ BOOL CGBModuleData::Init(
 		return FALSE;
 	++m_dwInitMark;
 
+	// 初始化对象锁管理器。
+	if (!GBInitObjLockMgr(&m_ObjLockMgr))
+		return FALSE;
+	++m_dwInitMark;
+
 	return TRUE;
 }
 
@@ -52,6 +58,11 @@ void CGBModuleData::Release(void)
 	// 注：按初始化记号逐步释放成员变量，这时不需要 break。
 	switch (m_dwInitMark)
 	{
+	case GB_IM_OBJ_LOCK_MGR_INITIALIZED:		// 对象锁管理器初始化完毕。
+	{
+		// 释放对象锁管理器。
+		GBReleaseObjLockMgr(&m_ObjLockMgr);
+	}
 	case GB_IM_FSM_ALLOC_MGR_INITIALIZED:		// FSM 分配器管理器初始化完毕。
 	{
 		// 释放 FSM 分配器管理器。
@@ -69,7 +80,6 @@ void CGBModuleData::Release(void)
 	}
 	case GB_IM_NOT_INITIALIZED:					// 未初始化。
 	{
-
 	}
 	break;
 	}

@@ -19,10 +19,14 @@ GBEXTERN_C GBAPI void GBSTDCALL GBAssert(
 	)
 {
 	// 锁定断言函数。
-//	CGBObjLock ObjLock(&GBAssert);
+	HANDLE hObjLock = GBLockObj(&GBAssert);
 
 	// 调用 C 标准库的断言函数。
 	_wassert(lpszMsg, lpszFile, uLine);
+
+	// 解锁断言函数。
+	if (NULL != hObjLock)
+		GBUnlockObjByObjLock(hObjLock);
 }
 
 #endif

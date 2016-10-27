@@ -25,6 +25,8 @@
 #include "gbcommon.h"
 #include "gbfsminner.h"
 #include "gbfsm.h"
+#include "gbobjlockinner.h"
+#include "gbobjlock.h"
 #include "gbmoduledata.h"
 #include "gbassert.h"
 #include "gbthreaddata.h"

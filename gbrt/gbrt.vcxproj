@@ -167,6 +167,8 @@
     <ClInclude Include="gbfsminner.h" />
     <ClInclude Include="gblist.h" />
     <ClInclude Include="gbmoduledata.h" />
+    <ClInclude Include="gbobjlock.h" />
+    <ClInclude Include="gbobjlockinner.h" />
     <ClInclude Include="gbrt.h" />
     <ClInclude Include="gbthreaddata.h" />
     <ClInclude Include="stdafx.h" />
@@ -192,6 +194,8 @@
     <ClCompile Include="gbfsm.cpp" />
     <ClCompile Include="gbfsminner.cpp" />
     <ClCompile Include="gbmoduledata.cpp" />
+    <ClCompile Include="gbobjlock.cpp" />
+    <ClCompile Include="gbobjlockinner.cpp" />
     <ClCompile Include="gbrt.cpp" />
     <ClCompile Include="gbthreaddata.cpp" />
     <ClCompile Include="stdafx.cpp">

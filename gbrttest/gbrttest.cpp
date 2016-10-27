@@ -17,8 +17,6 @@ BEGIN_MESSAGE_MAP(CgbrttestApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
-GB_DECL_MAP(Int, int, int, 1024);
-
 // CgbrttestApp 构造
 
 CgbrttestApp::CgbrttestApp()
@@ -35,6 +33,41 @@ CgbrttestApp::CgbrttestApp()
 
 CgbrttestApp theApp;
 
+GBEXTERN_C DWORD WINAPI MyThread(LPVOID lpParam)
+{
+	HANDLE hFSMAlloc = GBPTR2PTR(HANDLE, lpParam);
+	LPVOID lplpFSM[100];
+	for (int i = 0; i != 100; ++i)
+	{
+		for (int j = 0; j != 100; ++j)
+			lplpFSM[j] = GBAllocFSM(hFSMAlloc);
+		for (int j = 0; j != 100; ++j)
+		{
+			if (NULL != lplpFSM[j])
+				GBFreeFSM(lplpFSM[j]);
+		}
+	}
+
+	return 0;
+}
+
+GBEXTERN_C DWORD WINAPI MySafeThread(LPVOID lpParam)
+{
+	HANDLE hFSMAlloc = GBPTR2PTR(HANDLE, lpParam);
+	LPVOID lplpFSM[100];
+	for (int i = 0; i != 100; ++i)
+	{
+		for (int j = 0; j != 100; ++j)
+			lplpFSM[j] = GBLockedAllocFSM(hFSMAlloc);
+		for (int j = 0; j != 100; ++j)
+		{
+			if (NULL != lplpFSM[j])
+				GBLockedFreeFSM(lplpFSM[j]);
+		}
+	}
+
+	return 0;
+}
 
 // CgbrttestApp 初始化
 
@@ -71,32 +104,16 @@ BOOL CgbrttestApp::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 
-	LARGE_INTEGER LI, LI1, LI2;
-	::QueryPerformanceFrequency(&LI);
-
 	{
-		::QueryPerformanceCounter(&LI1);
-		CGBIntMap IntMap;
-		for (int i = 0; i != 1024 *1024; ++i)
-			IntMap[i] = i;
-		::QueryPerformanceCounter(&LI2);
+		HANDLE hFSMAlloc = GBCreateFSMAlloc(16, 100);
+		HANDLE lphThread[10];
+		for (int i = 0; i != 10; ++i)
+			lphThread[i] = ::CreateThread(NULL, 0, &MySafeThread, GBPTR2PTR(LPVOID, hFSMAlloc), 0, NULL);
+		::WaitForMultipleObjects(10, lphThread, TRUE, INFINITE);
+		for (int i = 0; i != 10; ++i)
+			::CloseHandle(lphThread[i]);
+		GBDestroyFSMAlloc(hFSMAlloc);
 	}
-
-	LONGLONG llTime1 = LI2.QuadPart - LI1.QuadPart;
-
-	{
-		::QueryPerformanceCounter(&LI1);
-		std::map<int, int> IntMap;
-		for (int i = 0; i != 1024 * 1024; ++i)
-			IntMap[i] = i;
-		::QueryPerformanceCounter(&LI2);
-	}
-
-	LONGLONG llTime2 = LI2.QuadPart - LI1.QuadPart;
-
-	CString str;
-	str.Format(_T("%I64d, %I64d"), llTime1, llTime2);
-	AfxMessageBox(str);
 
 	CgbrttestDlg dlg;
 	m_pMainWnd = &dlg;

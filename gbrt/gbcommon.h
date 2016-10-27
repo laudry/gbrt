@@ -19,25 +19,6 @@ typedef int (GBSTDCALL *GBNOTIFYPROC)(
 
 #pragma pack(pop)
 
-// 构造对象。
-template<class _Type>
-GBINLINE void GBSTDCALL GBConstruct(_Type *lpObj)
-{
-	::new (lpObj) _Type();
-}
-template<class _Type, class _OtherType>
-GBINLINE void GBSTDCALL GBConstruct(_Type *lpObj, const _OtherType & Value)
-{
-	::new (lpObj) _Type(Value);
-}
-
-// 析构对象。
-template<class _Type>
-GBINLINE void GBSTDCALL GBDestruct(_Type *lpObj)
-{
-	lpObj->~_Type();
-}
-
 // 初始化临界区。
 GBEXTERN_C GBINLINE BOOL GBSTDCALL GBInitializeCriticalSection(
 	LPCRITICAL_SECTION lpCriticalSection		// OUT：临界区。

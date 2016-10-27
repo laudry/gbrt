@@ -54,6 +54,12 @@
     <ClInclude Include="gbfsm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gbobjlockinner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gbobjlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -81,6 +87,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gbfsm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gbobjlockinner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gbobjlock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

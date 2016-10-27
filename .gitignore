@@ -13,3 +13,4 @@ gbrttest/x64/
 *.opendb
 *.db
 *.aps
+*.user
