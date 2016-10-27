@@ -11,8 +11,8 @@
 *.inl		text eol=crlf diff=cpp
 *.tlh		text eol=crlf diff=cpp
 *.tli		text eol=crlf diff=cpp
-*.rc		text eol=crlf
-*.rc2		text eol=crlf
+*.rc		-text
+*.rc2		-text
 
 # binary files
 *.exe		binary

@@ -115,6 +115,16 @@ BOOL CgbrttestApp::InitInstance()
 		GBDestroyFSMAlloc(hFSMAlloc);
 	}
 
+	{
+		HANDLE hObjLock = GBLockObj(this);
+
+		GBLockObj(this);
+
+		GBUnlockObj(this);
+
+		GBUnlockObjByObjLock(hObjLock);
+	}
+
 	CgbrttestDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
