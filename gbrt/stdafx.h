@@ -7,7 +7,7 @@
 
 #include "targetver.h"
 
-#include <windows.h>
+#include <WinSock2.h>
 #include <wincrypt.h>
 
 #define GBAPI __declspec(dllexport)
@@ -29,5 +29,6 @@
 #include "gbobjlock.h"
 #include "gbmoduledata.h"
 #include "gbassert.h"
+#include "gbbuffinner.h"
 #include "gbthreaddata.h"
 #include "gberror.h"

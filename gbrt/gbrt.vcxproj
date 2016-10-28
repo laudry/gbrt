@@ -160,6 +160,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gbassert.h" />
+    <ClInclude Include="gbbuff.h" />
+    <ClInclude Include="gbbuffinner.h" />
     <ClInclude Include="gbcommon.h" />
     <ClInclude Include="gbdef.h" />
     <ClInclude Include="gberror.h" />
@@ -190,6 +192,8 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="gbassert.cpp" />
+    <ClCompile Include="gbbuff.cpp" />
+    <ClCompile Include="gbbuffinner.cpp" />
     <ClCompile Include="gberror.cpp" />
     <ClCompile Include="gbfsm.cpp" />
     <ClCompile Include="gbfsminner.cpp" />

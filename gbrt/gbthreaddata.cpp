@@ -16,6 +16,7 @@ GBEXTERN_C GBSTATIC void GBSTDCALL GBInitThreadData(
 	::ZeroMemory(lpThreadData, sizeof(GBTHREADDATA));
 
 	// 初始化需要特别初始化的成员变量。
+	GBInitBuffMgr(&lpThreadData->BuffMgr);
 }
 
 #pragma endregion
@@ -31,6 +32,7 @@ GBEXTERN_C void GBSTDCALL GBFreeThreadData(
 )
 {
 	// 释放需要特别释放的成员变量。
+	GBReleaseBuffMgr(&lpThreadData->BuffMgr);
 
 	// 释放线程数据内存。
 	free(lpThreadData);

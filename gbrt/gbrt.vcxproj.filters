@@ -60,6 +60,12 @@
     <ClInclude Include="gbobjlock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gbbuff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gbbuffinner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -93,6 +99,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gbobjlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gbbuffinner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gbbuff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

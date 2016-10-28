@@ -6,6 +6,7 @@
 #pragma once
 
 #include "gbdef.h"
+#include <WinSock2.h>
 
 #pragma pack(push, GBPACK)
 

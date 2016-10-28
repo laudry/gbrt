@@ -37,7 +37,7 @@
 
 #include "gbfsm.h"
 #include "gbobjlock.h"
-
+#include "gbbuff.h"
 
 
 

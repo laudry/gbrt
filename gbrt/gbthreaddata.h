@@ -16,6 +16,7 @@ typedef struct _GBTHREADDATA
 	LONG lErrorMsg1;							// 错误信息一。
 	LONG lErrorMsg2;							// 错误信息二。
 	LONG lErrorMsg3;							// 错误信息三。
+	GBBUFFMGR BuffMgr;							// 缓存管理器。
 } GBTHREADDATA, *LPGBTHREADDATA;
 typedef struct _GBTHREADDATA const *LPCGBTHREADDATA;
 

@@ -9,21 +9,36 @@
 
 #pragma pack(push, GBPACK)
 
-// 函数名。
-typedef enum _GBFUNCNAME
+// API 名称。
+typedef enum _GBAPINAME
 {
-	GB_FN_NONE = 0,								// 无函数名。
-} GBFUNCNAME;
+	GB_AN_NONE = 0,								// 无 API 名称。
+} GBAPINAME;
 
 // 错误码。
 typedef enum _GBERRORCODE
 {
 	GB_EC_NO_ERROR = 0,							// 没有错误。
-	GB_EC_API_ERROR,							// API 错误。错误信息一：API 的错误码；错误信息二：API 的函数名。
+	GB_EC_API_ERROR,							// API 错误。
 	GB_EC_NO_MEMORY,							// 内存不足。
-	GB_EC_INVALID_PARAM,						// 无效参数。错误信息一：无效参数索引，从 1 开始。
+	GB_EC_INVALID_PARAM,						// 无效参数。
 	GB_EC_OVERFLOW,								// 溢出。
+	GB_EC_BUFF_INSUFFICIENT,					// 缓存不足。
 } GBERRORCODE;
+
+/*
+错误信息。
+-----------------------------------------------------------------------------------------------------------
+| 错误码                       | 错误信息一             | 错误信息二             | 错误信息三             |
+-----------------------------------------------------------------------------------------------------------
+| GB_EC_NO_ERROR               | 无                     | 无                     | 无                     |
+| GB_EC_API_ERROR              | API 错误码             | API 名称               | 无                     |
+| GB_EC_NO_MEMORY              | 无                     | 无                     | 无                     |
+| GB_EC_INVALID_PARAM          | 参数索引，从 1 开始    | 无                     | 无                     |
+| GB_EC_OVERFLOW               | 无                     | 无                     | 无                     |
+| GB_EC_BUFF_INSUFFICIENT      | 无                     | 无                     | 无                     |
+-----------------------------------------------------------------------------------------------------------
+*/
 
 #pragma pack(pop)
 

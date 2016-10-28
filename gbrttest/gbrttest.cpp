@@ -120,9 +120,25 @@ BOOL CgbrttestApp::InitInstance()
 
 		GBLockObj(this);
 
+		GBIsObjLock(hObjLock);
+
+		GBIsObjLocked(this);
+
 		GBUnlockObj(this);
 
 		GBUnlockObjByObjLock(hObjLock);
+
+		GBIsObjLock(hObjLock);
+
+		GBIsObjLocked(this);
+	}
+
+	{
+		LPGBBUFF lpBuff = GBAllocBuff(1024);
+		GBFreeBuff(lpBuff);
+
+		lpBuff = GBAllocBuff(2048);
+		GBFreeBuff(lpBuff);
 	}
 
 	CgbrttestDlg dlg;
