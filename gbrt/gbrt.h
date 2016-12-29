@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include "gbcommon.h"
+#include "gbdef.h"
 
 #if !defined (GBAPI)
-	#define GBAPI __declspec(dllexport)
-	#define GBVARIABLE __declspec(dllexport)
-	#define GBCLASS __declspec(dllexport)
+	#define GBAPI __declspec(dllimport)
+	#define GBVARIABLE __declspec(dllimport)
+	#define GBCLASS __declspec(dllimport)
 	#if defined (_WIN64)
 		#if !defined (_UNICODE)
 			#if !defined (_DEBUG)

@@ -22,7 +22,6 @@ GBEXTERN_C BOOL APIENTRY DllMain(
 	break;
 	case DLL_THREAD_ATTACH:						// 附加到线程。
 	{
-
 	}
 	break;
 	case DLL_THREAD_DETACH:						// 与线程分离。

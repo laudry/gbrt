@@ -6,9 +6,6 @@
 #pragma once
 
 #include "gbdef.h"
-#include <WinSock2.h>
-
-#pragma pack(push, GBPACK)
 
 // 通知函数。
 typedef int (GBSTDCALL *GBNOTIFYPROC)(
@@ -17,8 +14,6 @@ typedef int (GBSTDCALL *GBNOTIFYPROC)(
 	INT_PTR nParam2,							// IN：参数二。
 	INT_PTR lpUserData							// IN：用户数据。
 	);
-
-#pragma pack(pop)
 
 // 初始化临界区。
 GBEXTERN_C GBINLINE BOOL GBSTDCALL GBInitializeCriticalSection(

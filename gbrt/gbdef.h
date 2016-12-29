@@ -32,6 +32,6 @@
 #define GBALIGNSIZE1(dwSize, dwAlign) ((((dwSize)-1)/(dwAlign)+1)*(dwAlign))
 #define GBALIGNSIZE2(dwSize, dwShift) (((((dwSize)-1)>>(dwShift))+1)<<(dwShift))
 
-#define GBHandleException(_Exception) (GetExceptionCode()==_Exception ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
+#define GBHandleException(_Exception) (GetExceptionCode()==(_Exception) ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
 
 #endif

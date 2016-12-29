@@ -10,9 +10,7 @@
 // 分配缓存。
 // 返回值：缓存。失败时返回 NULL。
 // 注：缓存容量按 8 字节对齐；缓存容量小于默认缓存容量时按默认缓存容量分配。
-// 分配原则：
-// 1、缓存容量大于默认缓存容量时分配缓存容量大小，否则分配默认缓存容量大小；
-// 2、分配缓存容量大小时直接分配，分配默认缓存容量大小时从缓存管理器分配。
+// 分配原则：缓存容量大于默认缓存容量时直接分配，否则从缓存管理器分配。
 GBEXTERN_C GBAPI LPGBBUFF GBSTDCALL GBAllocBuff(
 	ULONG uBuffCapacity							// IN：缓存容量。
 )
@@ -21,7 +19,7 @@ GBEXTERN_C GBAPI LPGBBUFF GBSTDCALL GBAllocBuff(
 	uBuffCapacity = GBALIGNSIZE2(uBuffCapacity, 3);
 
 	// 分配缓存。
-	LPGBBUFF lpBuff;							// 返回值。
+	LPGBBUFF lpBuff;
 	if (uBuffCapacity > GB_DEFAULT_BUFF_CAPACITY)
 		lpBuff = GBPTR2PTR(LPGBBUFF, malloc(sizeof(GBBUFF) + uBuffCapacity));
 	else
@@ -36,7 +34,7 @@ GBEXTERN_C GBAPI LPGBBUFF GBSTDCALL GBAllocBuff(
 	}
 
 	// 初始化缓存。
-	lpBuff->BuffListItem.lpNext = lpBuff->BuffListItem.lpPrev = NULL;
+	lpBuff->BuffListItem.lpNext = lpBuff->BuffListItem.lpPrev = &lpBuff->BuffListItem;
 	lpBuff->uBuffCapacity = max(uBuffCapacity, GB_DEFAULT_BUFF_CAPACITY);
 	lpBuff->Buff.len = 0;
 	lpBuff->Buff.buf = GBPTR2PTR(CHAR FAR *, lpBuff) + sizeof(GBBUFF);
@@ -47,9 +45,7 @@ GBEXTERN_C GBAPI LPGBBUFF GBSTDCALL GBAllocBuff(
 // 分配指定容量缓存。
 // 返回值：缓存。失败时返回 NULL。
 // 注：缓存容量按 8 字节对齐。
-// 分配原则：
-// 1、缓存容量不等于默认缓存容量时分配缓存容量大小，否则分配默认缓存容量大小；
-// 2、分配缓存容量大小时直接分配，分配默认缓存容量大小时从缓存管理器分配。
+// 分配原则：缓存容量不等于默认缓存容量时直接分配，否则从缓存管理器分配。
 GBEXTERN_C GBAPI LPGBBUFF GBSTDCALL GBAllocAppointedCapacityBuff(
 	ULONG uBuffCapacity							// IN：缓存容量。
 )
@@ -58,7 +54,7 @@ GBEXTERN_C GBAPI LPGBBUFF GBSTDCALL GBAllocAppointedCapacityBuff(
 	uBuffCapacity = GBALIGNSIZE2(uBuffCapacity, 3);
 
 	// 分配缓存。
-	LPGBBUFF lpBuff;							// 返回值。
+	LPGBBUFF lpBuff;
 	if (uBuffCapacity != GB_DEFAULT_BUFF_CAPACITY)
 		lpBuff = GBPTR2PTR(LPGBBUFF, malloc(sizeof(GBBUFF) + uBuffCapacity));
 	else
@@ -73,7 +69,7 @@ GBEXTERN_C GBAPI LPGBBUFF GBSTDCALL GBAllocAppointedCapacityBuff(
 	}
 
 	// 初始化缓存。
-	lpBuff->BuffListItem.lpNext = lpBuff->BuffListItem.lpPrev = NULL;
+	lpBuff->BuffListItem.lpNext = lpBuff->BuffListItem.lpPrev = &lpBuff->BuffListItem;
 	lpBuff->uBuffCapacity = uBuffCapacity;
 	lpBuff->Buff.len = 0;
 	lpBuff->Buff.buf = GBPTR2PTR(CHAR FAR *, lpBuff) + sizeof(GBBUFF);

@@ -23,12 +23,14 @@
 #include <tchar.h>
 
 #include "gbcommon.h"
+#include "gblist.h"
+#include "gbrt.h"
 #include "gbfsminner.h"
 #include "gbfsm.h"
 #include "gbobjlockinner.h"
 #include "gbobjlock.h"
+#include "gberror.h"
 #include "gbmoduledata.h"
 #include "gbassert.h"
 #include "gbbuffinner.h"
 #include "gbthreaddata.h"
-#include "gberror.h"
